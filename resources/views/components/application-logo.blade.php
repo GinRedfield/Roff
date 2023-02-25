@@ -3,7 +3,7 @@
 </svg> -->
 
 
-<img src="{{ asset('build/assets/ROFF.png') }}" {{$attributes}}>
+<img src="{{ asset('storage/ROFF.png') }}" {{$attributes}}>
 
 </img>
 

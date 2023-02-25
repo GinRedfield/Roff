@@ -24,6 +24,8 @@ Route::get('/forum',function()
 }
 )->middleware(['auth', 'verified'])->name('forum');
 
+Route::resource('forums','App\Http\Controllers\ForumController')->middleware(['auth', 'verified']);
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
