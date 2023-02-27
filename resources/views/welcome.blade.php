@@ -37,13 +37,13 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0 rounded">
-                 </div>
-                 <img src="{{ asset('build/assets/ROFF.png') }}" class="block h-9 w-auto fill-current text-gray-800 rounded dark:text-gray-200" />
-               
-                    <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-                    </div>
+                <!-- <div class="flex justify-center pt-8 sm:justify-start overflow-hidden sm:pt-0 rounded">
+                 </div> -->
+                <img src="{{ asset('storage/ROFF.png') }}" class="sm:rounded-lg" />
+            
+                <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                    Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+                </div>
                 
             </div>
         </div>

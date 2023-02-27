@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Forum;
+use App\Models\User;
+
 
 class ForumController extends Controller
 {
@@ -16,6 +18,7 @@ class ForumController extends Controller
     {
         //
         $forums = Forum::all();
+        // return ($forums);
         return view('forum')->with('forums',$forums);
     }
 
@@ -27,6 +30,34 @@ class ForumController extends Controller
     public function create()
     {
         //
+        return view('new_forum_post');
+    }
+
+    /**
+     * View forums data with sort by views desc function.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function indexView(Request $request)
+    {
+        $forums = Forum::all();
+        $sort = $request->input('sort');
+        if($sort == '1'){
+            $forumsDesc = $forums->toArray();
+            // usort($forumsDesc, function($a, $b)
+            // {
+            //     return strcmp($a['views'], $b['views']);
+            // });
+            usort($forumsDesc, function($a, $b) {
+                return $b['views'] <=> $a['views'];
+            });
+            // return ($test);
+            return view('forum')->with('forums',$forumsDesc);
+        }
+        else{
+            return view('forum')->with('forums',$forums);
+        }
     }
 
     /**
@@ -37,7 +68,16 @@ class ForumController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newForum = new Forum();
+        $newForum->heading = $request->input('heading');
+        $newForum->content = $request->input('content');
+        $newForum->views = 0;
+        $newForum->create_by = $request->input('create_by');
+        $newForum->username = $request->input('username');
+
+        $newForum->save();
+        return redirect()->route('forums.index');
+        
     }
 
     /**
@@ -47,8 +87,11 @@ class ForumController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    { 
+        $forum = Forum::findorFail($id);
+        $forum->views += 1;
+        $forum->save();
+        return view('post')->with('forum', $forum);
     }
 
     /**
@@ -82,6 +125,7 @@ class ForumController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Forum::destroy($id);
+        return redirect()->route('forums.index');
     }
 }

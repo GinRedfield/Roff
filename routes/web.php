@@ -18,12 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/forum',function()
-{
-    return view('forum');
-}
-)->middleware(['auth', 'verified'])->name('forum');
+Route::resource('stocks', 'App\Http\Controllers\StockController')->middleware(['auth', 'verified']);
 
+Route::post('forums/indexView', 'App\Http\Controllers\ForumController@indexView')->name('forums.indexView');
 Route::resource('forums','App\Http\Controllers\ForumController')->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
