@@ -11,14 +11,15 @@ from tensorflow import keras
 # Read CSV
 # tf.get_logger().setLevel('INFO')
 df = pd.read_csv('roff_model/pred_features.csv')
-model = tf.keras.models.load_model('roff_model/model')
+model = tf.keras.models.load_model('roff_model/roff_model')
 features = df.drop(['Ticker'], axis = 1)
+# print(model.summary())
 # Generate Predictions
 predictions = model.predict(features)
 result = df[['Ticker', 'Adj_Close']]
 result['1_Year_Price'] = predictions
 result['1_Year_Price'] = result['1_Year_Price'].astype(float).round(2)
-# with open('predictions.csv','a') as fd:
-#   fd.write(result)
+# # with open('predictions.csv','a') as fd:
+# #   fd.write(result)
 print(result)
 

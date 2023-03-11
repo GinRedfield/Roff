@@ -91,6 +91,7 @@ class ForumController extends Controller
         $forum->views += 1;
         $forum->save();
         return view('post')->with('forum', $forum);
+        // return ($forum);
     }
 
     /**
