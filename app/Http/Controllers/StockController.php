@@ -17,7 +17,10 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        $stocks=Stock::all();
+
+        return view('stock')->with('stocks', $stocks);
+        // return view('new_forum_post');
     }
 
     /**
