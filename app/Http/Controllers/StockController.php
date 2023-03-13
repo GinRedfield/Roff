@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Stock;
+use App\Models\Portfolio;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -17,10 +19,14 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks=Stock::all();
+        $user = Auth::user();
+        $portfolio = Portfolio::where('user_id', $user['id'])->get();
+        $portfolio_array = $portfolio->toArray();
+        $tickers = array_column($portfolio_array, 'ticker');
+        $stocks = Stock::whereIn('ticker', $tickers)->get();
+        return view('stock')->with('stocks',$stocks);
+        // return ($stocks);
 
-        return view('stock')->with('stocks', $stocks);
-        // return view('new_forum_post');
     }
 
     /**
