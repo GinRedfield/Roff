@@ -214,8 +214,6 @@ class StockController extends Controller
      */
     public function destroy(Request $request)
     {
-        // Portfolio::destroy($id);
-        // return redirect()->route('stocks.index');
-        // return($request);
+        // 
     }
 }
