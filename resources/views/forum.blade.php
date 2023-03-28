@@ -47,7 +47,7 @@
 
                 @foreach($forums as $data) 
                 <div class="relative mt-2 flex p-6 bg-white border-b border-gray-200 text-sm font-medium text-left rounded">
-                    <a href="{{ route('forums.show', $data['id']) }}" class="overflow-hidden truncate w-2 text-sm text-gray-700 dark:text-gray-500">
+                    <a href="{{ route('forums.show', $data['id']) }}" class="overflow-hidden truncate w-auto text-sm text-gray-700 dark:text-gray-500">
                         {{ $data['heading'] }}
                     </a>
                     &nbsp;&nbsp;
@@ -72,8 +72,4 @@
         </div>
     </div>
     
-    <div class="p-6 bg-white border-b border-gray-200 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <a href="{{ route('stocks.create') }}">Python Test</a>
-    </div>
-            
 </x-app-layout>

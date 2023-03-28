@@ -33,6 +33,8 @@
         </div>
         
         <!-- <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script> -->
-        <script src="{{ asset('storage/javascript.js') }}"></script>
+        <!-- tensorflow js incompatile with current model -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script> -->
+        <script type="module" src="{{ asset('storage/javascript.js') }}"></script>
     </body>
 </html>
