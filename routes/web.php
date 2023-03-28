@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Route::resource('stocks', 'App\Http\Controllers\StockController')->middleware(['auth', 'verified']);
 
-Route::post('forums/indexView', 'App\Http\Controllers\ForumController@indexView')->name('forums.indexView');
+Route::post('forums/indexView', 'App\Http\Controllers\ForumController@indexView')->middleware(['auth', 'verified'])->name('forums.indexView');
 Route::resource('forums','App\Http\Controllers\ForumController')->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
