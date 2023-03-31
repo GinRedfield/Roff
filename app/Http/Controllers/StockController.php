@@ -41,6 +41,46 @@ class StockController extends Controller
     }
 
     /**
+    * Dashboard Page
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function dashboard()
+    {
+        // portfolio retrieval
+        $user = Auth::user();
+        $portfolio = Portfolio::where('user_id', $user['id'])->get();
+        $portfolio_array = $portfolio->toArray();
+        $search_tickers = array_column($portfolio_array, 'ticker');
+        $portfolio_stocks = Stock::whereIn('ticker', $search_tickers)->orderBy('ticker')->get()->toArray();
+
+        $stocks_report = array_column($portfolio_stocks, 'report_base_price');
+        $stocks_predict = array_column($portfolio_stocks, '1_year_price');
+
+        $stocks_return = array();
+            foreach (array_keys($stocks_report + $stocks_predict + $search_tickers) as $key) 
+        {
+            $stocks_return[$key] = ($stocks_predict[$key] - $stocks_report[$key])/$stocks_report[$key];
+        }
+
+        $average = array_sum($stocks_return)/count($stocks_return);
+        $stocks['returns'] = array_combine($search_tickers, $stocks_return );
+        uasort($stocks['returns'], function($a, $b) {
+            return $b <=> $a;
+        });
+
+        $stocks['returns'] = array_slice($stocks['returns'], 0, 3);
+        $stocks['tickers'] = array_keys($stocks['returns']);
+        $stocks['average'] = $average;
+
+       
+        return view('dashboard')->with('stocks',$stocks);
+        // return ($stocks);
+
+
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
