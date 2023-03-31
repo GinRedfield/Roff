@@ -23,9 +23,7 @@ Route::resource('stocks', 'App\Http\Controllers\StockController')->middleware(['
 Route::post('forums/indexView', 'App\Http\Controllers\ForumController@indexView')->middleware(['auth', 'verified'])->name('forums.indexView');
 Route::resource('forums','App\Http\Controllers\ForumController')->middleware(['auth', 'verified']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', 'App\Http\Controllers\StockController@dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
