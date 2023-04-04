@@ -71,6 +71,7 @@ class StockController extends Controller
 
         $stocks['returns'] = array_slice($stocks['returns'], 0, 3);
         $stocks['tickers'] = array_keys($stocks['returns']);
+        $stocks['returns'] = array_values($stocks['returns']);
         $stocks['average'] = $average;
 
        
