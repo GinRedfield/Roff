@@ -27,7 +27,7 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('forums.index')" :active="request()->routeIs('forums.index')">
-                        {{ __('Forum') }}
+                        {{ __('Leave a Message') }}
                     </x-nav-link>
                 </div>
             </div>
