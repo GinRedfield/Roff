@@ -47,6 +47,18 @@
 
                 @foreach($forums as $data) 
                 <div class="relative mt-2 flex p-6 bg-white border-b border-gray-200 text-sm font-medium text-left rounded">
+                    
+                    @if(Auth::user()->id == $data['create_by'])
+                    <a href="{{ route('forums.show', $data['id']) }}" class="overflow-hidden truncate w-auto text-sm text-sky-500 dark:text-sky-400">
+                        {{ $data['heading'] }}
+                    </a>
+                    &nbsp;&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline ">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg> 
+                    {{ $data['views'] }}
+                    @else
                     <a href="{{ route('forums.show', $data['id']) }}" class="overflow-hidden truncate w-auto text-sm text-gray-700 dark:text-gray-500">
                         {{ $data['heading'] }}
                     </a>
@@ -56,14 +68,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg> 
                     {{ $data['views'] }}
-                    @if(Auth::user()->id == $data['create_by'])
-                    <div class='absolute right-0 px-6 text-sm font-medium'>
-                        <form action="{{ route('forums.destroy', $data['id']) }}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="font-medium text-red-600 dark:text-red-300 hover:underline">Delete</button>
-                        </form>
-                    </div>
                     @endif
                 </div>
                 @endforeach

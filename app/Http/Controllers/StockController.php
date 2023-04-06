@@ -52,31 +52,40 @@ class StockController extends Controller
         $portfolio = Portfolio::where('user_id', $user['id'])->get();
         $portfolio_array = $portfolio->toArray();
         $search_tickers = array_column($portfolio_array, 'ticker');
-        $portfolio_stocks = Stock::whereIn('ticker', $search_tickers)->orderBy('ticker')->get()->toArray();
+        // check if portfolio exists
+        if($search_tickers) {
+            // get data
+            $portfolio_stocks = Stock::whereIn('ticker', $search_tickers)->get()->toArray();
+            $stocks_report = array_column($portfolio_stocks, 'report_base_price');
+            $stocks_predict = array_column($portfolio_stocks, '1_year_price');
+            
+            // calculate diff
+            $stocks_return = [];
+            foreach (array_keys($stocks_report + $stocks_predict) as $key) {
+                $stocks_return[$key] = ($stocks_predict[$key] - $stocks_report[$key])/$stocks_report[$key];   
+            }
+            $average = array_sum($stocks_return)/count($stocks_return);
+            $stocks['returns'] = array_combine(array_column($portfolio_stocks, 'ticker'), $stocks_return );
+            // var_dump($stocks['returns']);
+            
+            // sort returns
+            uasort($stocks['returns'], function($a, $b) {
+                return $b <=> $a;
+            });
 
-        $stocks_report = array_column($portfolio_stocks, 'report_base_price');
-        $stocks_predict = array_column($portfolio_stocks, '1_year_price');
+            // get highest three and assumble everything
+            $stocks['returns'] = array_slice($stocks['returns'], 0, 3);
+            $stocks['tickers'] = array_keys($stocks['returns']);
+            $stocks['returns'] = array_values($stocks['returns']);
+            $stocks['average'] = $average;
 
-        $stocks_return = array();
-            foreach (array_keys($stocks_report + $stocks_predict + $search_tickers) as $key) 
-        {
-            $stocks_return[$key] = ($stocks_predict[$key] - $stocks_report[$key])/$stocks_report[$key];
+        
+            return view('dashboard')->with('stocks',$stocks);
+            // return ($stocks);
+        }else {
+            return view('dashboard');
         }
-
-        $average = array_sum($stocks_return)/count($stocks_return);
-        $stocks['returns'] = array_combine($search_tickers, $stocks_return );
-        uasort($stocks['returns'], function($a, $b) {
-            return $b <=> $a;
-        });
-
-        $stocks['returns'] = array_slice($stocks['returns'], 0, 3);
-        $stocks['tickers'] = array_keys($stocks['returns']);
-        $stocks['returns'] = array_values($stocks['returns']);
-        $stocks['average'] = $average;
-
-       
-        return view('dashboard')->with('stocks',$stocks);
-        // return ($stocks);
+        
 
 
     }
@@ -111,8 +120,10 @@ class StockController extends Controller
 
         // if stks in database
         if(in_array(strtoupper($tk_input), $all_tickers)) {
+            // if already exist in portfolio
             if(in_array(strtoupper($tk_input), $all_portfolio_tks)){
                 return redirect()->route('stocks.index');
+            // else add new portfolio
             }else {
                 $newPorfolio = new Portfolio();
                 $newPorfolio->ticker = $request->input('ticker');
@@ -145,10 +156,13 @@ class StockController extends Controller
                     'Earnings Per Share, Diluted',
                     'Return On Invested Capital'
                 ];
+                // translate json to array for dnn model input
                 foreach($search as $sr){
                     $key = array_search($sr, $cli_res[0]['statements'][0]['columns']);
                     $ml_input[$sr] = end($cli_res[0]['statements'][0]['data'])[$key];
                 }
+                // save report date first
+                $report_date = $ml_input['Report Date'];
                 // call API again to get price data
                 $response_price = $client->request('GET', "https://backend.simfin.com/api/v3/companies/prices/compact?ticker={$tk_input}&ratios=false&asreported=false&start={$ml_input['Report Date']}", [
                     'headers' => [
@@ -188,6 +202,7 @@ class StockController extends Controller
                     $newStock['ticker'] = strtoupper($tk_input);
                     $newStock['report_base_price'] = $ml_input['Adjusted Close'];
                     $newStock['1_year_price'] = $pred;
+                    $newStock['report_date'] = $report_date;
                     $newStock->save();
                     // also add to portfolio
                     $newPorfolio = new Portfolio();
