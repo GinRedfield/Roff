@@ -25,7 +25,7 @@ Roff requires
 ***
 After setting up the environment, follow the steps below:
 <ol>
-  <li>Copy your simfin api key, e.g., ROFF/app/Http/Controllers/StockController.php under store() and dashboard(), find them by searching "YOUR API KEY"</li>
+  <li>Copy your simfin api key, e.g., ROFF/app/Http/Controllers/StockController.php under store() and dashboard(), find them by searching <strong>"YOUR_API_KEY"</strong></li>
   <li><strong>Under the project directory</strong>, run
   
     composer install

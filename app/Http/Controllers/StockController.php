@@ -166,7 +166,7 @@ class StockController extends Controller
                 // call API again to get price data
                 $response_price = $client->request('GET', "https://backend.simfin.com/api/v3/companies/prices/compact?ticker={$tk_input}&ratios=false&asreported=false&start={$ml_input['Report Date']}", [
                     'headers' => [
-                      'Authorization' => 'api-key x0vFKNQksr360XeBTxrvywTWptVAbT8u',
+                      'Authorization' => 'api-key YOUR_API_KEY',
                       'accept' => 'application/json',
                     ],
                 ]);
