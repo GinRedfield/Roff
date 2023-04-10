@@ -14,7 +14,7 @@ To get this app to work, the necessary environment must be installed first.<br>
 Roff requires 
 <ol>
   <li>A local host webserver (e.g., XAMPP)</li>
-  <li>Local python3 enviornment (with numpy, pandas, tensorflow)</li>
+  <li>Local python3 environment (with numpy, pandas, tensorflow)</li>
   <li>Composer</li>
   <li>Node.js</li>
   <li>SimFin Account</li>
