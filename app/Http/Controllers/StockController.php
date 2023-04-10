@@ -137,7 +137,7 @@ class StockController extends Controller
             $client = new \GuzzleHttp\Client();       
             $response = $client->request('GET', "https://backend.simfin.com/api/v3/companies/statements/compact?ticker={$tk_input}&statements=DERIVED&period=FY", [
                 'headers' => [
-                'Authorization' => 'api-key x0vFKNQksr360XeBTxrvywTWptVAbT8u',
+                'Authorization' => 'api-key YOUR_API_KEY',
                 'accept' => 'application/json',
                 ],
             ]);
