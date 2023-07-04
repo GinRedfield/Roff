@@ -2,7 +2,7 @@
 
 ## Introduction
 ***
-Roff is a webapp that integrate Deep neural network machine learning model to forcast security prices based on financial report data. Roff is designed to be user-friendly and intuitive, with a clean and modern user interface. 
+Roff is a webapp that integrate deep neural network machine learning model to forcast security prices based on financial report data. Roff is designed to be user-friendly and intuitive, with a clean and modern user interface. 
 <br>
 The application is built on top of the [Laravel PHP framework](https://laravel.com), and utilize [Laravel Breeze](https://laravel.com/docs/starter-kits#laravel-breeze) as authentication module.
 <br>
